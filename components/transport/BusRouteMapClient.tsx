@@ -4,11 +4,11 @@ import { cn } from "@/lib/utils";
 import type { BusStop, RoutePath } from "@/types";
 
 /**
- * Placeholder renderer for the route map.
+ * Placeholder renderer for the route map, drawn as a stop timeline.
  *
  * Swap the body for Leaflet/MapLibre — this file is already the client-only,
- * dynamically-imported boundary, so a map library that touches `window` at import
- * time won't break SSR. Keep the props shape when you do.
+ * dynamically-imported boundary, so a map library that touches `window` at
+ * import time won't break SSR. Keep the props shape when you do.
  */
 export default function BusRouteMapClient({
   stops,
@@ -20,32 +20,38 @@ export default function BusRouteMapClient({
   className?: string;
 }) {
   const ordered = [...stops].sort((a, b) => a.order - b.order);
+  if (ordered.length === 0) return null;
 
   return (
-    <div
-      className={cn(
-        "rounded-xl border border-black/10 bg-black/[0.03] p-4 dark:border-white/15 dark:bg-white/5",
-        className,
-      )}
-    >
-      <p className="mb-3 text-xs uppercase tracking-wide text-black/50 dark:text-white/50">
-        Route map ({path.length} plotted points)
+    <section className={cn("card p-6", className)} aria-label="Key stops">
+      <p className="eyebrow mb-5">
+        Key stops{path.length > 0 ? ` · ${path.length} plotted points` : ""}
       </p>
-      <ol className="space-y-2">
-        {ordered.map((stop) => (
-          <li key={`${stop.order}-${stop.name}`} className="flex gap-3 text-sm">
-            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-600 text-[11px] font-semibold text-white">
-              {stop.order}
-            </span>
-            <span>
-              {stop.name}
-              <span className="ml-2 text-xs text-black/40 dark:text-white/40">
+
+      <ol className="relative">
+        {/* The line the dots sit on. */}
+        <span
+          aria-hidden
+          className="absolute left-[11px] top-2 bottom-2 w-px bg-gradient-to-b from-teal via-teal/45 to-coral"
+        />
+        {ordered.map((stop, index) => (
+          <li key={`${stop.order}-${stop.name}`} className="relative flex gap-4 pb-6 last:pb-0">
+            <span
+              aria-hidden
+              className={cn(
+                "relative z-10 mt-1 h-[22px] w-[22px] shrink-0 rounded-full border-2 border-surface",
+                index === ordered.length - 1 ? "bg-coral" : "bg-teal",
+              )}
+            />
+            <span className="min-w-0 pt-0.5">
+              <span className="block font-semibold text-navy">{stop.name}</span>
+              <span className="block font-mono text-xs text-muted">
                 {stop.lat.toFixed(4)}, {stop.lng.toFixed(4)}
               </span>
             </span>
           </li>
         ))}
       </ol>
-    </div>
+    </section>
   );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { TourAffiliateWidget } from "@/components/tours/TourAffiliateWidget";
 import { JsonLd } from "@/components/ui/JsonLd";
@@ -27,7 +28,7 @@ export default async function ToursPage() {
   );
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       <JsonLd
         schema={breadcrumbSchema([
           { name: siteConfig.name, path: "/" },
@@ -38,9 +39,12 @@ export default async function ToursPage() {
         <JsonLd key={deal.id} schema={touristAttractionSchema(deal)} />
       ))}
 
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Tours &amp; day trips in Mazatlán</h1>
-        <p className="max-w-2xl text-black/70 dark:text-white/70">
+      <header className="max-w-2xl">
+        <p className="eyebrow">Worth booking</p>
+        <h1 className="mt-3 font-display text-4xl leading-tight text-navy sm:text-5xl">
+          Tours &amp; day trips
+        </h1>
+        <p className="mt-4 text-lg leading-relaxed text-ink/75">
           A short, hand-picked list rather than an endless catalogue. Bookings go through partner
           sites; we earn a commission at no extra cost to you.
         </p>
@@ -50,10 +54,15 @@ export default async function ToursPage() {
       <TourAffiliateWidget deals={transport} placement="grid" heading="Airport transfers & cars" />
 
       {deals.length === 0 ? (
-        <p className="text-black/60 dark:text-white/60">
-          No active deals yet. Add rows to <code>affiliate_deals</code> and flip{" "}
-          <code>is_active</code>.
-        </p>
+        <div className="card max-w-xl p-6">
+          <p className="leading-relaxed text-ink/80">
+            We&apos;re still hand-picking the tours worth recommending. In the meantime, the{" "}
+            <Link href="/bus-routes" className="font-semibold text-teal-ink hover:underline">
+              bus route guides
+            </Link>{" "}
+            cover getting around on your own.
+          </p>
+        </div>
       ) : null}
     </div>
   );

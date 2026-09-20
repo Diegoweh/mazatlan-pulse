@@ -24,7 +24,7 @@ export default async function BusRoutesPage() {
   const routes = await getBusRoutes();
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <JsonLd
         schema={breadcrumbSchema([
           { name: siteConfig.name, path: "/" },
@@ -32,41 +32,56 @@ export default async function BusRoutesPage() {
         ])}
       />
 
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Mazatlán bus routes</h1>
-        <p className="max-w-2xl text-black/70 dark:text-white/70">
-          Hand-checked routes, not scraped. Flag the bus down at any corner, pay the driver when you
+      <header className="max-w-2xl">
+        <p className="eyebrow">Getting around</p>
+        <h1 className="mt-3 font-display text-4xl leading-tight text-navy sm:text-5xl">
+          Mazatlán bus routes
+        </h1>
+        <p className="mt-4 text-lg leading-relaxed text-ink/75">
+          Checked by hand, not scraped. Flag the bus down at any corner, pay the driver when you
           board, and keep small bills handy.
         </p>
       </header>
 
-      <ul className="grid gap-4 sm:grid-cols-2">
-        {routes.map((route) => (
-          <li key={route.id}>
-            <Link
-              href={`/bus-routes/${route.slug}`}
-              className="block h-full rounded-xl border border-black/10 p-4 hover:shadow-md dark:border-white/15"
-            >
-              <p className="font-semibold">{route.route_name}</p>
-              <p className="mt-1 text-sm text-black/60 dark:text-white/60">
-                {route.key_stops.length} key stops
-                {route.fare_mxn !== null ? ` · ${formatMxn(route.fare_mxn)}` : ""}
-              </p>
-              {route.last_verified_at === null ? (
-                <p className="mt-2 text-xs font-medium text-amber-700 dark:text-amber-400">
-                  Not yet verified on the ground
-                </p>
-              ) : null}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {routes.length > 0 ? (
+        <ul className="grid gap-5 sm:grid-cols-2">
+          {routes.map((route) => (
+            <li key={route.id}>
+              <Link
+                href={`/bus-routes/${route.slug}`}
+                className="card card-interactive flex h-full flex-col gap-3 p-6"
+              >
+                <span className="font-display text-xl text-navy">{route.route_name}</span>
 
-      {routes.length === 0 ? (
-        <p className="text-black/60 dark:text-white/60">
-          No routes published yet. Seed them with <code>supabase/seed.sql</code> and verify each one.
+                <span className="flex flex-wrap items-center gap-2">
+                  <span className="pill bg-teal-wash text-teal-ink">
+                    {route.key_stops.length} key stops
+                  </span>
+                  {route.fare_mxn !== null ? (
+                    <span className="pill bg-coral-wash text-coral-ink">
+                      {formatMxn(route.fare_mxn)}
+                    </span>
+                  ) : null}
+                </span>
+
+                {route.operating_hours ? (
+                  <span className="text-sm text-muted">{route.operating_hours}</span>
+                ) : null}
+
+                {route.last_verified_at === null ? (
+                  <span className="mt-auto pt-2 text-xs font-semibold text-coral-ink">
+                    Not yet verified on the ground
+                  </span>
+                ) : null}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-muted">
+          Route guides are on the way. Each one is checked in person before it goes up.
         </p>
-      ) : null}
+      )}
     </div>
   );
 }

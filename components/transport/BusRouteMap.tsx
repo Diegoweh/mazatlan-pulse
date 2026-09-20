@@ -14,7 +14,7 @@ import type { BusStop, RoutePath } from "@/types";
 const BusRouteMapClient = dynamic(() => import("./BusRouteMapClient"), {
   ssr: false,
   loading: () => (
-    <div className="h-64 animate-pulse rounded-xl bg-black/5 dark:bg-white/10" aria-hidden />
+    <div className="h-64 animate-pulse rounded-[14px] bg-navy/[0.04]" aria-hidden />
   ),
 });
 

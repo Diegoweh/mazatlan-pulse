@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fraunces, Karla } from "next/font/google";
 
 import { JsonLd } from "@/components/ui/JsonLd";
 import { SiteFooter, SiteHeader } from "@/components/ui/SiteChrome";
@@ -8,11 +8,23 @@ import { siteConfig } from "@/lib/site";
 
 import "./globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+// Fraunces: a warm, slightly wonky display serif. Picked to sit next to the
+// script wordmark without competing with it.
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  axes: ["SOFT", "WONK"],
+  display: "swap",
+});
+
+// Karla for body: humanist, open counters, holds up in 250-word route guides.
+const karla = Karla({
+  variable: "--font-karla",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  // metadataBase makes every relative canonical/OG URL in child pages absolute.
   metadataBase: new URL(siteConfig.url),
   title: {
     default: `${siteConfig.name} — Events, Buses & Tours in Mazatlán`,
@@ -34,14 +46,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="en" className={`${fraunces.variable} ${karla.variable} h-full`}>
       <body className="flex min-h-full flex-col">
         <JsonLd schema={websiteSchema()} />
+        <a
+          href="#main"
+          className="sr-only rounded-full bg-navy px-4 py-2 text-sand focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50"
+        >
+          Skip to content
+        </a>
         <SiteHeader />
-        <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">{children}</main>
+        <main id="main" className="mx-auto w-full max-w-5xl flex-1 px-5 py-12 sm:px-6">
+          {children}
+        </main>
         <SiteFooter />
       </body>
     </html>

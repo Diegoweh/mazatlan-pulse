@@ -52,3 +52,4 @@ export function truncateForMeta(text: string | null, max = 155): string | undefi
   const lastSpace = cut.lastIndexOf(" ");
   return `${(lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[,;:.\s]+$/, "")}…`;
 }
+

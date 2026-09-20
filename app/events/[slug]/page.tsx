@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
@@ -11,8 +12,6 @@ import { formatEventDate, truncateForMeta } from "@/lib/utils";
 import { getAffiliateDeals } from "@/services/affiliates/queries";
 import { getEventBySlug } from "@/services/events/queries";
 
-type Props = { params: Promise<{ slug: string }> };
-
 // No generateStaticParams yet: with Cache Components it must return at least one
 // entry, and there are no published events (or no Supabase env) at build time.
 // Once the table has content, add it back to prerender the known slugs:
@@ -23,6 +22,8 @@ type Props = { params: Promise<{ slug: string }> };
 //   }
 //
 // Until then every slug is served as an App Shell and upgraded by ISR on first visit.
+
+type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -62,17 +63,22 @@ async function EventDetail({ params }: Props) {
         ])}
       />
 
-      <header className="space-y-3">
-        <h1 className="text-3xl font-bold tracking-tight">{event.title}</h1>
-        <p className="text-black/70 dark:text-white/70">
+      <header className="space-y-4">
+        <p className="eyebrow">Event</p>
+        <h1 className="font-display text-4xl leading-tight text-navy sm:text-5xl">{event.title}</h1>
+        <p className="text-lg text-muted">
           <time dateTime={event.starts_at}>{formatEventDate(event.starts_at)}</time>
           {event.venue_name ? ` · ${event.venue_name}` : null}
         </p>
-        {event.price_info ? <p className="font-medium">{event.price_info}</p> : null}
+        {event.price_info ? (
+          <p>
+            <span className="pill bg-coral-wash text-coral-ink">{event.price_info}</span>
+          </p>
+        ) : null}
       </header>
 
       {event.image_url ? (
-        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-black/5">
+        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[14px] bg-teal-wash">
           <Image
             src={event.image_url}
             alt=""
@@ -85,32 +91,34 @@ async function EventDetail({ params }: Props) {
       ) : null}
 
       {event.description_en ? (
-        <p className="max-w-2xl whitespace-pre-line leading-relaxed">{event.description_en}</p>
+        <div className="prose-guide max-w-2xl">
+          <p className="whitespace-pre-line">{event.description_en}</p>
+        </div>
       ) : null}
 
-      {event.address ? (
-        <p className="text-sm text-black/60 dark:text-white/60">{event.address}</p>
-      ) : null}
+      {event.address ? <p className="text-sm text-muted">{event.address}</p> : null}
 
       {event.ticket_url ? (
-        <a
-          href={event.ticket_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block rounded-lg bg-teal-600 px-4 py-2 font-medium text-white hover:bg-teal-700"
-        >
-          Tickets &amp; details
-        </a>
+        <p>
+          <a
+            href={event.ticket_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-secondary inline-block px-5 py-2.5 text-sm"
+          >
+            Tickets &amp; details
+          </a>
+        </p>
       ) : null}
 
       {/* Attribution is not optional: we publish a summary, the listing is theirs. */}
-      <p className="border-t border-black/10 pt-4 text-sm text-black/50 dark:border-white/15 dark:text-white/50">
+      <p className="border-t border-line pt-6 text-sm text-muted">
         Summarized in English from{" "}
         <a
           href={event.source_url}
           target="_blank"
           rel="noopener noreferrer nofollow"
-          className="underline"
+          className="font-semibold text-teal-ink hover:underline"
         >
           {event.source_name}
         </a>
@@ -118,18 +126,20 @@ async function EventDetail({ params }: Props) {
       </p>
 
       <TourAffiliateWidget deals={deals} placement="inline" heading="While you're in town" />
+
+      <p className="text-sm">
+        <Link href="/events" className="font-semibold text-teal-ink hover:underline">
+          ← All Mazatlán events
+        </Link>
+      </p>
     </>
   );
 }
 
-/**
- * Not async, and never awaits params itself — that is what lets Next.js prerender
- * a URL-independent App Shell for slugs that weren't known at build time.
- */
 export default function EventPage(props: Props) {
   return (
     <article className="space-y-8">
-      <Suspense fallback={<div className="h-96 animate-pulse rounded-xl bg-black/5" />}>
+      <Suspense fallback={<div className="h-96 animate-pulse rounded-[14px] bg-navy/[0.04]" />}>
         <EventDetail params={props.params} />
       </Suspense>
     </article>

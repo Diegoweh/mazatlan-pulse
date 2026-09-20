@@ -26,49 +26,42 @@ export function EventCard({
   priority?: boolean;
 }) {
   return (
-    <article
-      className={cn(
-        "group flex flex-col overflow-hidden rounded-xl border border-black/10 bg-white transition hover:shadow-lg dark:border-white/15 dark:bg-white/5",
-        className,
-      )}
-    >
+    <article className={cn("card card-interactive group relative flex flex-col overflow-hidden", className)}>
       {event.image_url ? (
-        <div className="relative aspect-[16/9] w-full bg-black/5">
+        <div className="relative aspect-[16/10] w-full overflow-hidden bg-teal-wash">
           <Image
             src={event.image_url}
             alt=""
             fill
-            sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
-            className="object-cover"
+            sizes="(min-width: 1024px) 340px, (min-width: 640px) 50vw, 100vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
             priority={priority}
           />
         </div>
       ) : null}
 
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        <p className="text-xs font-medium uppercase tracking-wide text-teal-700 dark:text-teal-300">
-          {CATEGORY_LABELS[event.category]}
-        </p>
+      <div className="flex flex-1 flex-col gap-2 p-5">
+        <p className="eyebrow">{CATEGORY_LABELS[event.category]}</p>
 
-        <h3 className="text-lg font-semibold leading-snug">
+        <h3 className="font-display text-lg leading-snug text-navy">
           <Link href={`/events/${event.slug}`} className="after:absolute after:inset-0">
             {event.title}
           </Link>
         </h3>
 
-        <p className="text-sm text-black/70 dark:text-white/70">
+        <p className="text-sm text-muted">
           <time dateTime={event.starts_at}>{formatEventDate(event.starts_at)}</time>
           {event.venue_name ? ` · ${event.venue_name}` : null}
         </p>
 
         {event.description_en ? (
-          <p className="line-clamp-3 text-sm text-black/60 dark:text-white/60">
-            {event.description_en}
-          </p>
+          <p className="line-clamp-3 text-sm leading-relaxed text-ink/75">{event.description_en}</p>
         ) : null}
 
         {event.price_info ? (
-          <p className="mt-auto pt-2 text-sm font-medium">{event.price_info}</p>
+          <p className="mt-auto pt-3">
+            <span className="pill bg-coral-wash text-coral-ink">{event.price_info}</span>
+          </p>
         ) : null}
       </div>
     </article>

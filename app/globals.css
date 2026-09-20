@@ -1,26 +1,168 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  Mazatlán Pulse — design tokens.
+
+  Brand hexes are used verbatim for surfaces and accents. The *-ink variants
+  exist because the brand coral and slate fail WCAG AA as text (2.68:1 and
+  3.72:1 on sand); they're the same hues pushed dark enough to read.
+
+  Single light theme on purpose: the brand is warm sand + deep navy, and a
+  dark inversion would fight the coastal-paper feel the logo sets up.
+*/
+@theme {
+  /* Brand, as specified */
+  --color-navy: #102a35;
+  --color-teal: #2d7c7a;
+  --color-coral: #e87561;
+  --color-sand: #f7f4ee;
+  --color-surface: #ffffff;
+  --color-ink: #172126;
+  --color-slate: #718087;
+  --color-line: #e4e0d7;
+
+  /* Accessible text variants */
+  --color-muted: #5e6d74;
+  --color-teal-ink: #266b69;
+  --color-coral-ink: #b84a35;
+
+  /* Tints for washes and hovers */
+  --color-teal-wash: #e8f1f0;
+  --color-coral-wash: #fceee9;
+  --color-navy-soft: #1c3d4a;
+
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-karla), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 14px;
+
+  --shadow-card: 0 1px 2px rgb(16 42 53 / 0.05), 0 8px 24px -12px rgb(16 42 53 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(16 42 53 / 0.06), 0 18px 36px -16px rgb(16 42 53 / 0.28);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background-color: var(--color-sand);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    /* Paper grain: two offset dot fields, almost subliminal, keeps the warm
+       background from reading as flat #F7F4EE. */
+    background-image:
+      radial-gradient(rgb(16 42 53 / 0.022) 1px, transparent 1px),
+      radial-gradient(rgb(16 42 53 / 0.018) 1px, transparent 1px);
+    background-size: 22px 22px, 22px 22px;
+    background-position: 0 0, 11px 11px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-coral);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-teal-ink);
+    outline-offset: 2px;
+    border-radius: 3px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Small uppercase label that sits above a section heading. */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-teal-ink);
+  }
+
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 220ms ease, transform 220ms ease, border-color 220ms ease;
+  }
+
+  .card-interactive:hover {
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--color-teal) 35%, var(--color-line));
+  }
+
+  .btn-primary {
+    background: var(--color-coral);
+    /* Ink, not white: white on coral is 2.94:1 and fails AA. */
+    color: var(--color-ink);
+    font-weight: 600;
+    border-radius: 999px;
+    transition: background-color 180ms ease, transform 180ms ease;
+  }
+
+  .btn-primary:hover {
+    background: color-mix(in srgb, var(--color-coral) 88%, var(--color-ink));
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: var(--color-teal);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 999px;
+    transition: background-color 180ms ease, transform 180ms ease;
+  }
+
+  .btn-secondary:hover {
+    background: var(--color-teal-ink);
+    transform: translateY(-1px);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  /* Long-form route/event copy. */
+  .prose-guide h2 {
+    font-size: 1.3rem;
+    line-height: 1.3;
+    margin-top: 0.5rem;
+    color: var(--color-navy);
+  }
+
+  .prose-guide p {
+    color: color-mix(in srgb, var(--color-ink) 88%, transparent);
+    line-height: 1.75;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

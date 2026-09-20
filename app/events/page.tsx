@@ -23,7 +23,7 @@ export default async function EventsPage() {
   const events = await getUpcomingEvents({ limit: 60 });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <JsonLd
         schema={breadcrumbSchema([
           { name: siteConfig.name, path: "/" },
@@ -31,21 +31,26 @@ export default async function EventsPage() {
         ])}
       />
 
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Events in Mazatlán</h1>
-        <p className="text-black/70 dark:text-white/70">
-          Concerts, festivals and nightlife, in English. Times are Mazatlán local time.
+      <header className="max-w-2xl">
+        <p className="eyebrow">What&apos;s on</p>
+        <h1 className="mt-3 font-display text-4xl leading-tight text-navy sm:text-5xl">
+          Events in Mazatlán
+        </h1>
+        <p className="mt-4 text-lg leading-relaxed text-ink/75">
+          Concerts, festivals and nightlife, in English. All times are Mazatlán local time.
         </p>
       </header>
 
       {events.length > 0 ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {events.map((event, index) => (
             <EventCard key={event.id} event={event} priority={index < 3} />
           ))}
         </div>
       ) : (
-        <p className="text-black/60 dark:text-white/60">Nothing published yet — check back soon.</p>
+        <p className="text-muted">
+          No events listed right now. We check local listings regularly — check back soon.
+        </p>
       )}
     </div>
   );
