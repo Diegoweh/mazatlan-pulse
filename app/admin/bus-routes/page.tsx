@@ -29,6 +29,7 @@ async function RouteList() {
   const { data, error } = await supabase
     .from("bus_routes")
     .select("*")
+    .order("sort_order", { ascending: true })
     .order("route_name", { ascending: true });
 
   if (error) return <p className="text-red-600">Failed to load routes: {error.message}</p>;
@@ -54,6 +55,7 @@ async function RouteList() {
               {route.key_stops.length} stops
               {route.fare_mxn !== null ? ` · ${formatMxn(route.fare_mxn)}` : " · no fare"}
               {route.last_verified_at ? "" : " · unverified"}
+              {` · order ${route.sort_order}`}
             </p>
           </div>
           <span

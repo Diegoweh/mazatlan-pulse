@@ -5,6 +5,7 @@ import { Suspense } from "react";
 
 import { TourAffiliateWidget } from "@/components/tours/TourAffiliateWidget";
 import { BusRouteMap } from "@/components/transport/BusRouteMap";
+import { BusRouteStops } from "@/components/transport/BusRouteStops";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { leadParagraph, toProse } from "@/lib/prose";
 import { breadcrumbSchema, busRouteSchema } from "@/lib/schema-org";
@@ -119,7 +120,16 @@ async function RouteDetail({ params }: Props) {
         </div>
       ) : null}
 
-      <BusRouteMap stops={route.key_stops} path={route.route_path} />
+      <div className="space-y-4">
+        <BusRouteMap
+          stops={route.key_stops}
+          path={route.route_path}
+          routeName={route.route_name}
+        />
+        {/* Server-rendered: the map is `ssr: false`, so the stops must live
+            outside it to reach crawlers and no-JS visitors. */}
+        <BusRouteStops stops={route.key_stops} />
+      </div>
 
       {route.fare_notes ? (
         <p className="max-w-2xl text-sm leading-relaxed text-muted">{route.fare_notes}</p>
@@ -138,7 +148,7 @@ async function RouteDetail({ params }: Props) {
 
 export default function BusRoutePage(props: Props) {
   return (
-    <article className="space-y-10">
+    <article className="page-shell space-y-10">
       <Suspense
         fallback={<div className="h-96 animate-pulse rounded-[14px] bg-navy/[0.04]" />}
       >

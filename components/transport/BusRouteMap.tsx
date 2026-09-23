@@ -14,18 +14,22 @@ import type { BusStop, RoutePath } from "@/types";
 const BusRouteMapClient = dynamic(() => import("./BusRouteMapClient"), {
   ssr: false,
   loading: () => (
-    <div className="h-64 animate-pulse rounded-[14px] bg-navy/[0.04]" aria-hidden />
+    <div className="h-[380px] animate-pulse rounded-[14px] bg-navy/[0.04]" aria-hidden />
   ),
 });
 
 export function BusRouteMap({
   stops,
   path,
+  routeName,
   className,
 }: {
   stops: BusStop[];
   path: RoutePath;
+  routeName?: string;
   className?: string;
 }) {
-  return <BusRouteMapClient stops={stops} path={path} className={className} />;
+  return (
+    <BusRouteMapClient stops={stops} path={path} routeName={routeName} className={className} />
+  );
 }

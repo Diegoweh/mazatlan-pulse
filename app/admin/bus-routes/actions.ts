@@ -59,6 +59,7 @@ const busRouteSchema = z.object({
   operating_hours: z.string().nullable(),
   frequency_notes: z.string().nullable(),
   is_active: z.boolean(),
+  sort_order: z.number().int().min(0).max(9999),
   /** Set only when the admin confirms they checked the route in person. */
   mark_verified: z.boolean(),
 });

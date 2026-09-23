@@ -28,7 +28,7 @@ export default async function ToursPage() {
   );
 
   return (
-    <div className="space-y-12">
+    <div className="page-shell space-y-12">
       <JsonLd
         schema={breadcrumbSchema([
           { name: siteConfig.name, path: "/" },

@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generado por scripts/sync-maplibre-worker.mjs en predev/prebuild
+/public/maplibre/

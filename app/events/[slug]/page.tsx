@@ -138,7 +138,7 @@ async function EventDetail({ params }: Props) {
 
 export default function EventPage(props: Props) {
   return (
-    <article className="space-y-8">
+    <article className="page-shell space-y-8">
       <Suspense fallback={<div className="h-96 animate-pulse rounded-[14px] bg-navy/[0.04]" />}>
         <EventDetail params={props.params} />
       </Suspense>

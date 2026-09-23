@@ -23,7 +23,7 @@ async function AdminIdentity() {
  */
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="space-y-6">
+    <div className="page-shell space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/10 pb-3 dark:border-white/15">
         <nav className="flex gap-4 text-sm">
           <Link href="/admin/review" className="hover:underline">

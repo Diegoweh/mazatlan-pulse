@@ -46,7 +46,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${karla.variable} h-full`}>
+    <html
+      lang="en"
+      // Tells Next to suppress smooth scrolling during route transitions.
+      data-scroll-behavior="smooth"
+      className={`${fraunces.variable} ${karla.variable} h-full`}
+    >
       <body className="flex min-h-full flex-col">
         <JsonLd schema={websiteSchema()} />
         <a
@@ -56,7 +61,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <SiteHeader />
-        <main id="main" className="mx-auto w-full max-w-5xl flex-1 px-5 py-12 sm:px-6">
+        {/* No container here: a full-bleed hero can't escape one without 100vw
+            tricks that add a horizontal scrollbar. Pages apply .page-shell. */}
+        <main id="main" className="w-full flex-1">
           {children}
         </main>
         <SiteFooter />

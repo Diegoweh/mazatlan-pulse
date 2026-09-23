@@ -83,6 +83,40 @@
 }
 
 @layer components {
+  /* The page container. Pages opt in, so a section can go full-bleed by
+     simply rendering outside it. */
+  .page-shell {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 64rem;
+    padding-inline: 1.25rem;
+    padding-block: 3rem;
+  }
+
+  @media (min-width: 640px) {
+    .page-shell {
+      padding-inline: 1.5rem;
+    }
+  }
+
+  /*
+    Hero scrim. Tuned against a pure-white video frame — the worst case — so the
+    headline holds 5.4:1 at the far edge of the text column while the footage
+    stays visible. Lighter than this and text over a bright frame drops below AA.
+    Stops are strongest on the left, where the copy sits, and let go on the right.
+  */
+  .hero-scrim {
+    background:
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--color-navy) 72%, transparent) 0%,
+        color-mix(in srgb, var(--color-navy) 65%, transparent) 35%,
+        color-mix(in srgb, var(--color-navy) 58%, transparent) 60%,
+        color-mix(in srgb, var(--color-navy) 18%, transparent) 100%
+      ),
+      color-mix(in srgb, var(--color-navy) 25%, transparent);
+  }
+
   /* Small uppercase label that sits above a section heading. */
   .eyebrow {
     font-family: var(--font-sans);

@@ -23,7 +23,7 @@ export default async function EventsPage() {
   const events = await getUpcomingEvents({ limit: 60 });
 
   return (
-    <div className="space-y-10">
+    <div className="page-shell space-y-10">
       <JsonLd
         schema={breadcrumbSchema([
           { name: siteConfig.name, path: "/" },

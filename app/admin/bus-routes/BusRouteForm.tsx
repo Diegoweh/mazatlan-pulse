@@ -136,6 +136,7 @@ export function BusRouteForm({ route }: { route: BusRouteRow | null }) {
         operating_hours: text("operating_hours"),
         frequency_notes: text("frequency_notes"),
         is_active: form.get("is_active") === "on",
+        sort_order: Number(text("sort_order") ?? 0),
         mark_verified: form.get("mark_verified") === "on",
         key_stops: collected.stops,
         route_path: path,
@@ -216,6 +217,20 @@ export function BusRouteForm({ route }: { route: BusRouteRow | null }) {
             step="0.5"
             min="0"
             defaultValue={route?.fare_mxn ?? ""}
+            className={FIELD}
+          />
+        </div>
+        <div>
+          <label className={LABEL} htmlFor="sort_order">
+            Sort order (lower shows first)
+          </label>
+          <input
+            id="sort_order"
+            name="sort_order"
+            type="number"
+            step="10"
+            min="0"
+            defaultValue={route?.sort_order ?? 0}
             className={FIELD}
           />
         </div>

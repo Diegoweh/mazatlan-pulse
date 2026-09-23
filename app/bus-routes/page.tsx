@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
+import { RouteIndex } from "@/components/transport/RouteIndex";
 import { JsonLd } from "@/components/ui/JsonLd";
+import { busGuideIntro, busGuideSections } from "@/content/bus-guide";
 import { breadcrumbSchema } from "@/lib/schema-org";
 import { siteConfig } from "@/lib/site";
 import { formatMxn } from "@/lib/utils";
 import { getBusRoutes } from "@/services/transport/queries";
 
 export const metadata: Metadata = {
-  title: "Mazatlán Bus Routes Guide for Visitors",
+  title: "How to Ride the Bus in Mazatlán",
   description:
-    "How to ride the public buses in Mazatlán: routes, fares, key stops between the Golden Zone, Centro and Cerritos, and what to expect on board.",
+    "How Mazatlán's public buses work: fares, key stops between the Golden Zone, Centro and Cerritos, and a verified guide to each route.",
   alternates: { canonical: "/bus-routes" },
   openGraph: {
-    title: "Mazatlán Bus Routes Guide for Visitors",
+    title: "How to Ride the Bus in Mazatlán",
     description:
-      "How to ride the public buses in Mazatlán: routes, fares, key stops and what to expect on board.",
+      "How Mazatlán's public buses work: fares, key stops, and a verified guide to each route.",
     url: "/bus-routes",
   },
 };
@@ -23,8 +24,21 @@ export const metadata: Metadata = {
 export default async function BusRoutesPage() {
   const routes = await getBusRoutes();
 
+  // Derived from verified rows, never hand-typed — it can't drift out of date.
+  const fares = routes
+    .map((route) => route.fare_mxn)
+    .filter((fare): fare is number => fare !== null);
+  const fareRange =
+    fares.length === 0
+      ? null
+      : Math.min(...fares) === Math.max(...fares)
+        ? formatMxn(fares[0])
+        : `${formatMxn(Math.min(...fares))}–${formatMxn(Math.max(...fares))}`;
+
+  const written = busGuideSections.filter((section) => section.body.length > 0);
+
   return (
-    <div className="space-y-10">
+    <div className="page-shell space-y-10">
       <JsonLd
         schema={breadcrumbSchema([
           { name: siteConfig.name, path: "/" },
@@ -35,53 +49,49 @@ export default async function BusRoutesPage() {
       <header className="max-w-2xl">
         <p className="eyebrow">Getting around</p>
         <h1 className="mt-3 font-display text-4xl leading-tight text-navy sm:text-5xl">
-          Mazatlán bus routes
+          How to ride the bus in Mazatlán
         </h1>
-        <p className="mt-4 text-lg leading-relaxed text-ink/75">
-          Checked by hand, not scraped. Flag the bus down at any corner, pay the driver when you
-          board, and keep small bills handy.
-        </p>
+        <p className="mt-5 text-lg leading-relaxed text-ink/80">{busGuideIntro}</p>
       </header>
 
       {routes.length > 0 ? (
-        <ul className="grid gap-5 sm:grid-cols-2">
-          {routes.map((route) => (
-            <li key={route.id}>
-              <Link
-                href={`/bus-routes/${route.slug}`}
-                className="card card-interactive flex h-full flex-col gap-3 p-6"
-              >
-                <span className="font-display text-xl text-navy">{route.route_name}</span>
+        <section className="space-y-5" aria-labelledby="routes-heading">
+          <div className="border-b border-line pb-3">
+            <p className="eyebrow">Route by route</p>
+            <h2 id="routes-heading" className="mt-1 font-display text-2xl text-navy sm:text-3xl">
+              {routes.length} routes worth knowing
+            </h2>
+          </div>
 
-                <span className="flex flex-wrap items-center gap-2">
-                  <span className="pill bg-teal-wash text-teal-ink">
-                    {route.key_stops.length} key stops
-                  </span>
-                  {route.fare_mxn !== null ? (
-                    <span className="pill bg-coral-wash text-coral-ink">
-                      {formatMxn(route.fare_mxn)}
-                    </span>
-                  ) : null}
-                </span>
+          <RouteIndex routes={routes} />
 
-                {route.operating_hours ? (
-                  <span className="text-sm text-muted">{route.operating_hours}</span>
-                ) : null}
-
-                {route.last_verified_at === null ? (
-                  <span className="mt-auto pt-2 text-xs font-semibold text-coral-ink">
-                    Not yet verified on the ground
-                  </span>
-                ) : null}
-              </Link>
-            </li>
-          ))}
-        </ul>
+          {fareRange ? (
+            <p className="text-sm text-muted">
+              Fares on the routes we&apos;ve checked run {fareRange}. Every route below was
+              verified in person; we say so on the page when one hasn&apos;t been.
+            </p>
+          ) : null}
+        </section>
       ) : (
         <p className="text-muted">
           Route guides are on the way. Each one is checked in person before it goes up.
         </p>
       )}
+
+      {/* Sections with no verified copy yet simply don't render — an empty
+          heading would promise the reader something that isn't there. */}
+      {written.length > 0 ? (
+        <div className="prose-guide max-w-2xl space-y-8">
+          {written.map((section) => (
+            <section key={section.id} id={section.id} className="space-y-3">
+              <h2>{section.heading}</h2>
+              {section.body.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
+            </section>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }

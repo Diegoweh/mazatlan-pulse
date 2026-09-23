@@ -1,12 +1,22 @@
 import Link from "next/link";
 
 import { EventCard } from "@/components/events/EventCard";
+import { HeroVideo } from "@/components/home/HeroVideo";
 import { TourAffiliateWidget } from "@/components/tours/TourAffiliateWidget";
+import { RouteIndex } from "@/components/transport/RouteIndex";
 import { siteConfig } from "@/lib/site";
-import { formatMxn } from "@/lib/utils";
 import { getAffiliateDeals } from "@/services/affiliates/queries";
 import { getUpcomingEvents } from "@/services/events/queries";
 import { getBusRoutes } from "@/services/transport/queries";
+
+/**
+ * Self-hosted: our bandwidth, our cache headers, nobody else deciding whether
+ * the hero keeps working. If the file is ever missing the gradient stands alone,
+ * which is a perfectly good hero on its own.
+ *
+ * Source clip: 1600x900, 21.6s, no audio track, faststart already applied.
+ */
+const HERO_VIDEO_SRC = "/video/hero.mp4";
 
 export default async function HomePage() {
   // Independent reads — fire them together rather than waterfalling.
@@ -17,38 +27,49 @@ export default async function HomePage() {
   ]);
 
   return (
-    <div className="space-y-20">
-      <section className="relative">
-        <p className="eyebrow">
-          {siteConfig.city.name}, {siteConfig.city.region} · in English
-        </p>
-        <h1 className="mt-3 max-w-3xl font-display text-4xl leading-[1.08] text-navy sm:text-5xl md:text-6xl">
-          Get around Mazatlán like you{" "}
-          <span className="relative whitespace-nowrap">
-            <span className="relative z-10">already live here</span>
-            <span
-              aria-hidden
-              className="absolute inset-x-0 bottom-1 z-0 h-3 bg-coral/35 sm:bottom-2"
-            />
-          </span>
-        </h1>
-        <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink/75">
-          Real bus routes with real stops and fares, what&apos;s on tonight, and the handful of
-          tours actually worth booking. No cruise-ship markup.
-        </p>
-        <div className="mt-7 flex flex-wrap gap-3">
-          <Link href="/bus-routes" className="btn-primary px-5 py-2.5 text-sm">
-            Ride the buses
-          </Link>
-          <Link
-            href="/events"
-            className="rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-navy transition-colors hover:border-teal hover:text-teal-ink"
-          >
-            What&apos;s on
-          </Link>
+    <>
+      {/* Full-bleed: sits outside .page-shell, so it spans the viewport without
+          100vw tricks that would add a horizontal scrollbar. */}
+      <section className="relative isolate overflow-hidden bg-navy">
+        {/* Always-present base, so the hero never renders empty or shifts. */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-[radial-gradient(120%_100%_at_15%_0%,#1c3d4a_0%,#102a35_55%,#0b1e26_100%)]"
+        />
+
+        <HeroVideo
+          src={HERO_VIDEO_SRC}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+
+        <div aria-hidden className="hero-scrim absolute inset-0" />
+
+        <div className="relative mx-auto w-full max-w-5xl px-5 py-20 sm:px-6 sm:py-28 lg:py-32">
+          <p className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-coral">
+            {siteConfig.city.name}, {siteConfig.city.region} · in English
+          </p>
+          <h1 className="mt-4 max-w-2xl font-display text-4xl leading-[1.08] text-white drop-shadow-sm sm:text-5xl md:text-[3.4rem]">
+            Get around Mazatlán like you already live here
+          </h1>
+          <p className="mt-5 max-w-lg text-lg leading-relaxed text-sand/90">
+            Real bus routes with real stops and fares, what&apos;s on tonight, and the handful of
+            tours actually worth booking. No cruise-ship markup.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/bus-routes" className="btn-primary px-5 py-2.5 text-sm">
+              Ride the buses
+            </Link>
+            <Link
+              href="/events"
+              className="rounded-full border border-white/30 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:border-white/70 hover:bg-white/10"
+            >
+              What&apos;s on
+            </Link>
+          </div>
         </div>
       </section>
 
+      <div className="page-shell space-y-20">
       <section className="space-y-6">
         <div className="flex items-end justify-between gap-4 border-b border-line pb-3">
           <div>
@@ -61,28 +82,7 @@ export default async function HomePage() {
         </div>
 
         {routes.length > 0 ? (
-          <ul className="grid gap-4 sm:grid-cols-2">
-            {routes.slice(0, 4).map((route) => (
-              <li key={route.id}>
-                <Link
-                  href={`/bus-routes/${route.slug}`}
-                  className="card card-interactive flex h-full flex-col gap-2 p-5"
-                >
-                  <span className="font-display text-lg text-navy">{route.route_name}</span>
-                  <span className="flex flex-wrap items-center gap-2">
-                    <span className="pill bg-teal-wash text-teal-ink">
-                      {route.key_stops.length} stops
-                    </span>
-                    {route.fare_mxn !== null ? (
-                      <span className="pill bg-coral-wash text-coral-ink">
-                        {formatMxn(route.fare_mxn)}
-                      </span>
-                    ) : null}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <RouteIndex routes={routes.slice(0, 4)} />
         ) : (
           <p className="text-muted">Route guides are on the way.</p>
         )}
@@ -112,7 +112,8 @@ export default async function HomePage() {
         )}
       </section>
 
-      <TourAffiliateWidget deals={deals} placement="grid" heading="Popular tours & transfers" />
-    </div>
+        <TourAffiliateWidget deals={deals} placement="grid" heading="Popular tours & transfers" />
+      </div>
+    </>
   );
 }

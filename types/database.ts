@@ -99,6 +99,8 @@ export type BusRouteRow = {
   frequency_notes: string | null;
   last_verified_at: string | null;
   is_active: boolean;
+  /** Lower shows first. Ties break on route_name. */
+  sort_order: number;
   created_at: string;
   updated_at: string;
 }

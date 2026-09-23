@@ -22,6 +22,9 @@ export async function getBusRoutes(): Promise<BusRouteRow[]> {
     .from("bus_routes")
     .select("*")
     .eq("is_active", true)
+    // Editor-controlled first, alphabetical as the tiebreaker so the order is
+    // always deterministic even when everything sits at the default 0.
+    .order("sort_order", { ascending: true })
     .order("route_name", { ascending: true });
 
   if (error) {
