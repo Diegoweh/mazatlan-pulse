@@ -46,7 +46,7 @@ export default async function HomePage() {
 
         <div className="relative mx-auto w-full max-w-5xl px-5 py-20 sm:px-6 sm:py-28 lg:py-32">
           <p className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-coral">
-            {siteConfig.city.name}, {siteConfig.city.region} · in English
+            {siteConfig.city.name}, {siteConfig.city.region}
           </p>
           <h1 className="mt-4 max-w-2xl font-display text-4xl leading-[1.08] text-white drop-shadow-sm sm:text-5xl md:text-[3.4rem]">
             Get around Mazatlán like you already live here
