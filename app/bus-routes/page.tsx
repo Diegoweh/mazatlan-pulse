@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 import { RouteIndex } from "@/components/transport/RouteIndex";
+import { Figure } from "@/components/ui/Figure";
+import { PageHero } from "@/components/ui/PageHero";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { busGuideIntro, busGuideSections } from "@/content/bus-guide";
 import { breadcrumbSchema } from "@/lib/schema-org";
@@ -38,7 +40,7 @@ export default async function BusRoutesPage() {
   const written = busGuideSections.filter((section) => section.body.length > 0);
 
   return (
-    <div className="page-shell space-y-10">
+    <>
       <JsonLd
         schema={breadcrumbSchema([
           { name: siteConfig.name, path: "/" },
@@ -46,13 +48,38 @@ export default async function BusRoutesPage() {
         ])}
       />
 
-      <header className="max-w-2xl">
-        <p className="eyebrow">Getting around</p>
-        <h1 className="mt-3 font-display text-4xl leading-tight text-navy sm:text-5xl">
-          How to ride the bus in Mazatlán
-        </h1>
-        <p className="mt-5 text-lg leading-relaxed text-ink/80">{busGuideIntro}</p>
-      </header>
+      {/* Aerial over Centro: the city grid the routes actually cross. */}
+      <PageHero
+        eyebrow="Getting around"
+        title="How to ride the bus in Mazatlán"
+        intro={busGuideIntro}
+        videoSrc="/video/centro-aereo.mp4"
+      />
+
+      <div className="page-shell space-y-10">
+
+      {/* This photo is the answer to the first question a visitor has, so it sits
+          above the route list rather than being scattered as decoration. */}
+      <section className="grid gap-6 sm:grid-cols-5 sm:items-center" aria-labelledby="spotting">
+        <Figure
+          src="/images/bus-2.webp"
+          alt="Two white Mazatlán city buses seen head-on, each with its route hand-lettered across the windshield: Alarcón–Sábalo on one and Juárez–Sábalo on the other."
+          imageClassName="aspect-[16/9]"
+          sizes="(min-width: 640px) 60vw, 100vw"
+          className="sm:col-span-3"
+          priority
+        />
+        <div className="space-y-3 sm:col-span-2">
+          <h2 id="spotting" className="font-display text-2xl text-navy">
+            How to spot your bus
+          </h2>
+          <p className="leading-relaxed text-ink/80">
+            There are no route numbers on the front. The destinations are written by hand across
+            the windshield — read those, not the colour of the bus. If the names match either end
+            of the route you want, it&apos;s yours.
+          </p>
+        </div>
+      </section>
 
       {routes.length > 0 ? (
         <section className="space-y-5" aria-labelledby="routes-heading">
@@ -78,6 +105,30 @@ export default async function BusRoutesPage() {
         </p>
       )}
 
+      <section className="grid gap-4 sm:grid-cols-3" aria-label="Mazatlán city buses">
+        <Figure
+          src="/images/bus-3.webp"
+          alt="A green Mazatlán city bus pulled over on the seafront malecón, with palm trees and the Pacific behind it."
+          imageClassName="aspect-[4/3]"
+          sizes="(min-width: 640px) 30vw, 100vw"
+          caption="Along the malecón"
+        />
+        <Figure
+          src="/images/bus-4.webp"
+          alt="Side view of a white and green Mazatlán city bus at a stop on a palm-lined street."
+          imageClassName="aspect-[4/3]"
+          sizes="(min-width: 640px) 30vw, 100vw"
+          caption="The standard green-and-white livery"
+        />
+        <Figure
+          src="/images/bus-1.webp"
+          alt="A line of white and green Mazatlán city buses parked nose to tail along a shaded street."
+          imageClassName="aspect-[4/3]"
+          sizes="(min-width: 640px) 30vw, 100vw"
+          caption="Waiting out the off-peak"
+        />
+      </section>
+
       {/* Sections with no verified copy yet simply don't render — an empty
           heading would promise the reader something that isn't there. */}
       {written.length > 0 ? (
@@ -92,6 +143,7 @@ export default async function BusRoutesPage() {
           ))}
         </div>
       ) : null}
-    </div>
+      </div>
+    </>
   );
 }

@@ -1,7 +1,9 @@
 import Link from "next/link";
 
 import { EventCard } from "@/components/events/EventCard";
-import { HeroVideo } from "@/components/home/HeroVideo";
+import { CityAreas } from "@/components/home/CityAreas";
+import { WideDuo } from "@/components/home/WideDuo";
+import { PageHero } from "@/components/ui/PageHero";
 import { TourAffiliateWidget } from "@/components/tours/TourAffiliateWidget";
 import { RouteIndex } from "@/components/transport/RouteIndex";
 import { siteConfig } from "@/lib/site";
@@ -28,46 +30,30 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Full-bleed: sits outside .page-shell, so it spans the viewport without
-          100vw tricks that would add a horizontal scrollbar. */}
-      <section className="relative isolate overflow-hidden bg-navy">
-        {/* Always-present base, so the hero never renders empty or shifts. */}
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-[radial-gradient(120%_100%_at_15%_0%,#1c3d4a_0%,#102a35_55%,#0b1e26_100%)]"
-        />
+      <PageHero
+        eyebrow={`${siteConfig.city.name}, ${siteConfig.city.region} · in English`}
+        title="Get around Mazatlán like you already live here"
+        intro="Real bus routes with real stops and fares, what's on tonight, and the handful of tours actually worth booking. No cruise-ship markup."
+        videoSrc={HERO_VIDEO_SRC}
+      >
+        <Link href="/bus-routes" className="btn-primary px-5 py-2.5 text-sm">
+          Ride the buses
+        </Link>
+        <Link
+          href="/events"
+          className="rounded-full border border-white/30 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:border-white/70 hover:bg-white/10"
+        >
+          What&apos;s on
+        </Link>
+      </PageHero>
 
-        <HeroVideo
-          src={HERO_VIDEO_SRC}
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+      {/* Contained triptych, then a full-bleed pair: two different shapes so the
+          page doesn't read as one long grid of photos. */}
+      <div className="page-shell pb-0">
+        <CityAreas />
+      </div>
 
-        <div aria-hidden className="hero-scrim absolute inset-0" />
-
-        <div className="relative mx-auto w-full max-w-5xl px-5 py-20 sm:px-6 sm:py-28 lg:py-32">
-          <p className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-coral">
-            {siteConfig.city.name}, {siteConfig.city.region}
-          </p>
-          <h1 className="mt-4 max-w-2xl font-display text-4xl leading-[1.08] text-white drop-shadow-sm sm:text-5xl md:text-[3.4rem]">
-            Get around Mazatlán like you already live here
-          </h1>
-          <p className="mt-5 max-w-lg text-lg leading-relaxed text-sand/90">
-            Real bus routes with real stops and fares, what&apos;s on tonight, and the handful of
-            tours actually worth booking. No cruise-ship markup.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/bus-routes" className="btn-primary px-5 py-2.5 text-sm">
-              Ride the buses
-            </Link>
-            <Link
-              href="/events"
-              className="rounded-full border border-white/30 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:border-white/70 hover:bg-white/10"
-            >
-              What&apos;s on
-            </Link>
-          </div>
-        </div>
-      </section>
+      <WideDuo />
 
       <div className="page-shell space-y-20">
       <section className="space-y-6">

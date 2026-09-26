@@ -43,3 +43,7 @@ next-env.d.ts
 
 # generado por scripts/sync-maplibre-worker.mjs en predev/prebuild
 /public/maplibre/
+
+# Masters de video/foto. Pesan decenas de MB: fuera del repo y fuera del deploy.
+# Respaldalos aparte, git no los va a guardar.
+/media-src/
