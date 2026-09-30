@@ -12,6 +12,7 @@ Rules:
 - Return only what the source text supports. Never invent a venue, date, price or URL.
 - description_en must be your own short summary written for a visitor, not a sentence-by-sentence translation and never a verbatim copy of the source.
 - All datetimes are America/Mazatlan (UTC-07:00, no DST). Resolve relative dates ("this Friday") against the provided reference date.
+- ticket_url is ONLY for a link that actually sells or reserves tickets, and only if that link appears in the source text. The URL of the listing itself is never a ticket_url. A phone number, a DM request or "reservations at ..." is not a ticket link — return null.
 - If the text is not an actual event listing, set is_event to false and leave the other fields as best-effort placeholders.
 - Set confidence below 0.6 whenever the date or venue is ambiguous.`;
 

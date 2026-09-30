@@ -22,6 +22,29 @@ export interface IngestReport {
   errors: string[];
 }
 
+/**
+ * Fixes optional fields the model gets wrong, without discarding the event.
+ *
+ * A bad optional field is not a reason to drop an otherwise good listing — the
+ * reviewer would never see it, and the event would silently never reach the site.
+ * Hard failures belong in validate(); this is for things we can simply null out.
+ */
+function sanitize(extracted: ExtractedEvent, sourceUrl: string): ExtractedEvent {
+  let ticketUrl = extracted.ticket_url;
+
+  if (ticketUrl) {
+    const isAbsolute = /^https?:\/\//i.test(ticketUrl);
+    // Observed in testing: asked for a ticket link on a post that says
+    // "reservations by phone", the model hands back the listing's own URL. That
+    // would render a "Tickets" button pointing at the Facebook post.
+    const echoesSource =
+      ticketUrl.replace(/\/+$/, "") === sourceUrl.replace(/\/+$/, "");
+    if (!isAbsolute || echoesSource) ticketUrl = null;
+  }
+
+  return { ...extracted, ticket_url: ticketUrl };
+}
+
 const MIN_CONFIDENCE = 0.5;
 /** Anything further out than this is almost always a misparsed year. */
 const MAX_FUTURE_DAYS = 400;
@@ -55,9 +78,7 @@ function validate(
     if (!Number.isNaN(parsed.getTime()) && parsed >= startsAt) endsAt = parsed;
   }
 
-  if (extracted.ticket_url && !/^https?:\/\//i.test(extracted.ticket_url)) {
-    return { ok: false, reason: "ticket_url is not an absolute http(s) URL" };
-  }
+
 
   return { ok: true, startsAt, endsAt };
 }
@@ -136,9 +157,11 @@ export async function runEventIngest(options?: { sourceId?: string }): Promise<I
 
     const rows: Partial<EventRow>[] = [];
     for (const item of fresh) {
-      const extracted = await extractEvent(item, now);
-      if (!extracted) continue;
+      const raw = await extractEvent(item, now);
+      if (!raw) continue;
       report.extracted++;
+
+      const extracted = sanitize(raw, item.sourceUrl);
 
       const verdict = validate(extracted, now);
       if (!verdict.ok) {
