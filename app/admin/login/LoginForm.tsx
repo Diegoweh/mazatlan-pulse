@@ -45,7 +45,7 @@ export function LoginForm({ next }: { next?: string }) {
 
   if (status.kind === "sent") {
     return (
-      <p className="rounded-lg border border-black/10 p-4 text-sm dark:border-white/15">
+      <p className="rounded-lg border border-black/10 p-4 text-sm">
         If that address has an admin account, a sign-in link is on its way. The link expires
         shortly and can only be used once.
       </p>
@@ -64,7 +64,7 @@ export function LoginForm({ next }: { next?: string }) {
         autoComplete="email"
         value={email}
         onChange={(changeEvent) => setEmail(changeEvent.target.value)}
-        className="w-full rounded-lg border border-black/20 bg-transparent px-3 py-2 dark:border-white/25"
+        className="w-full rounded-lg border border-black/20 bg-transparent px-3 py-2"
         placeholder="you@example.com"
       />
       <button

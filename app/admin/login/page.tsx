@@ -21,7 +21,7 @@ async function LoginPanel({ searchParams }: Props) {
   return (
     <>
       {error ? (
-        <p className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">
+        <p className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-700">
           {ERRORS[error] ?? "Sign-in failed. Request a new link."}
         </p>
       ) : null}
@@ -35,7 +35,7 @@ export default function AdminLoginPage(props: Props) {
     <div className="mx-auto max-w-md space-y-6">
       <header className="space-y-1">
         <h1 className="text-2xl font-bold">Admin sign in</h1>
-        <p className="text-sm text-black/60 dark:text-white/60">
+        <p className="text-sm text-black/60">
           Passwordless. Only addresses in <code>ADMIN_EMAILS</code> can do anything once signed in.
         </p>
       </header>

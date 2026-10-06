@@ -8,7 +8,7 @@ import type { BusRouteRow, BusStop, RoutePath } from "@/types";
 import { deleteBusRoute, saveBusRoute } from "./actions";
 
 const FIELD =
-  "w-full rounded-lg border border-black/20 bg-transparent px-3 py-2 text-sm dark:border-white/25";
+  "w-full rounded-lg border border-black/20 bg-transparent px-3 py-2 text-sm";
 const LABEL = "block text-sm font-medium mb-1";
 
 type StopDraft = { name: string; lat: string; lng: string };
@@ -316,7 +316,7 @@ export function BusRouteForm({ route }: { route: BusRouteRow | null }) {
               type="button"
               aria-label={`Remove stop ${index + 1}`}
               onClick={() => setStops((c) => c.filter((_, i) => i !== index))}
-              className="text-black/40 hover:text-red-600 dark:text-white/40"
+              className="text-black/40 hover:text-red-600"
             >
               ×
             </button>
@@ -345,7 +345,7 @@ export function BusRouteForm({ route }: { route: BusRouteRow | null }) {
         />
       </div>
 
-      <div className="space-y-2 rounded-lg border border-black/10 p-4 dark:border-white/15">
+      <div className="space-y-2 rounded-lg border border-black/10 p-4">
         <label className="flex items-center gap-2 text-sm">
           <input type="checkbox" name="is_active" defaultChecked={route?.is_active ?? true} />
           Active (visible on the public site)
@@ -354,7 +354,7 @@ export function BusRouteForm({ route }: { route: BusRouteRow | null }) {
           <input type="checkbox" name="mark_verified" />
           I checked this route in person today — set last verified
         </label>
-        <p className="text-xs text-black/50 dark:text-white/50">
+        <p className="text-xs text-black/50">
           {route?.last_verified_at
             ? `Last verified ${new Date(route.last_verified_at).toLocaleDateString("en-US")}.`
             : "Never verified — the public page shows a provisional warning."}
@@ -381,7 +381,7 @@ export function BusRouteForm({ route }: { route: BusRouteRow | null }) {
         ) : null}
         {message ? (
           <span
-            className={`text-sm ${isError ? "text-red-600" : "text-black/60 dark:text-white/60"}`}
+            className={`text-sm ${isError ? "text-red-600" : "text-black/60"}`}
           >
             {message}
           </span>

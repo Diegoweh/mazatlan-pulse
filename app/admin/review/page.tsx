@@ -20,7 +20,7 @@ async function QueueLoader() {
   const user = await requireAdmin();
   if (!user) {
     return (
-      <p className="text-black/70 dark:text-white/70">
+      <p className="text-black/70">
         <Link href="/admin/login?next=/admin/review" className="underline">
           Sign in
         </Link>{" "}
@@ -51,7 +51,7 @@ export default function AdminReviewPage() {
     <div className="space-y-6">
       <header className="space-y-1">
         <h1 className="text-2xl font-bold">Event review queue</h1>
-        <p className="text-sm text-black/60 dark:text-white/60">
+        <p className="text-sm text-black/60">
           Nothing reaches the public site until it is approved here.
         </p>
       </header>

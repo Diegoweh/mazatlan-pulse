@@ -17,7 +17,7 @@ export function ReviewQueue({ events }: { events: EventRow[] }) {
   const [resolved, setResolved] = useState<Record<string, string>>({});
 
   if (events.length === 0) {
-    return <p className="text-black/60 dark:text-white/60">Queue is empty.</p>;
+    return <p className="text-black/60">Queue is empty.</p>;
   }
 
   function act(id: string, action: "approve" | "reject") {
@@ -33,11 +33,11 @@ export function ReviewQueue({ events }: { events: EventRow[] }) {
       {events.map((event) => (
         <li
           key={event.id}
-          className="space-y-3 rounded-xl border border-black/10 p-4 dark:border-white/15"
+          className="space-y-3 rounded-xl border border-black/10 p-4"
         >
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <h2 className="text-lg font-semibold">{event.title}</h2>
-            <span className="text-xs uppercase tracking-wide text-black/50 dark:text-white/50">
+            <span className="text-xs uppercase tracking-wide text-black/50">
               {event.category} · {event.ai_model ?? "manual"}
             </span>
           </div>
@@ -48,9 +48,9 @@ export function ReviewQueue({ events }: { events: EventRow[] }) {
             {event.price_info ? ` · ${event.price_info}` : ""}
           </p>
 
-          <p className="text-sm text-black/70 dark:text-white/70">{event.description_en}</p>
+          <p className="text-sm text-black/70">{event.description_en}</p>
 
-          <details className="text-xs text-black/60 dark:text-white/60">
+          <details className="text-xs text-black/60">
             <summary className="cursor-pointer">Raw scraped text (audit only)</summary>
             <p className="mt-2 whitespace-pre-wrap">{event.description_original}</p>
           </details>
@@ -77,12 +77,12 @@ export function ReviewQueue({ events }: { events: EventRow[] }) {
               type="button"
               disabled={pending || Boolean(resolved[event.id])}
               onClick={() => act(event.id, "reject")}
-              className="rounded-lg border border-black/20 px-3 py-1.5 text-sm dark:border-white/25"
+              className="rounded-lg border border-black/20 px-3 py-1.5 text-sm"
             >
               Reject
             </button>
             {resolved[event.id] ? (
-              <span className="text-sm text-black/60 dark:text-white/60">{resolved[event.id]}</span>
+              <span className="text-sm text-black/60">{resolved[event.id]}</span>
             ) : null}
           </div>
         </li>

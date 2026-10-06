@@ -45,21 +45,21 @@ async function EventList() {
   const events = (data ?? []) as EventRow[];
   if (events.length === 0) {
     return (
-      <p className="text-sm text-black/60 dark:text-white/60">
+      <p className="text-sm text-black/60">
         No events yet. Paste a post from a venue&apos;s page and the form will draft it for you.
       </p>
     );
   }
 
   return (
-    <ul className="divide-y divide-black/10 dark:divide-white/15">
+    <ul className="divide-y divide-black/10">
       {events.map((event) => (
         <li key={event.id} className="flex items-center justify-between gap-4 py-3">
           <div className="min-w-0">
             <Link href={`/admin/events/${event.id}`} className="font-medium hover:underline">
               {event.title}
             </Link>
-            <p className="truncate text-xs text-black/50 dark:text-white/50">
+            <p className="truncate text-xs text-black/50">
               {formatEventDate(event.starts_at)}
               {event.venue_name ? ` · ${event.venue_name}` : ""}
               {event.ai_generated ? ` · drafted by ${event.ai_model ?? "AI"}` : " · written by hand"}
@@ -82,7 +82,7 @@ export default function AdminEventsPage() {
       <header className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">Events</h1>
-          <p className="text-sm text-black/60 dark:text-white/60">
+          <p className="text-sm text-black/60">
             Paste a post, check the draft, publish. Nothing reaches the site unpublished.
           </p>
         </div>

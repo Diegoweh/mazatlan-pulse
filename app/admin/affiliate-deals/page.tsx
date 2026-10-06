@@ -35,7 +35,7 @@ async function DealList() {
   const deals = (data ?? []) as AffiliateDealRow[];
   if (deals.length === 0) {
     return (
-      <p className="text-sm text-black/60 dark:text-white/60">
+      <p className="text-sm text-black/60">
         No deals yet. Add a few hand-picked tours and an airport transfer — that&apos;s the whole
         monetization path for the MVP.
       </p>
@@ -46,11 +46,11 @@ async function DealList() {
 
   return (
     <>
-      <p className="text-xs text-black/50 dark:text-white/50">
+      <p className="text-xs text-black/50">
         {deals.length} deal{deals.length === 1 ? "" : "s"} · {totalClicks} total click
         {totalClicks === 1 ? "" : "s"}
       </p>
-      <ul className="divide-y divide-black/10 dark:divide-white/15">
+      <ul className="divide-y divide-black/10">
         {deals.map((deal) => (
           <li key={deal.id} className="flex items-center justify-between gap-4 py-3">
             <div className="min-w-0">
@@ -60,7 +60,7 @@ async function DealList() {
               >
                 {deal.title}
               </Link>
-              <p className="truncate text-xs text-black/50 dark:text-white/50">
+              <p className="truncate text-xs text-black/50">
                 {deal.provider} · {deal.category.replace("_", " ")}
                 {deal.estimated_commission_pct !== null
                   ? ` · ${deal.estimated_commission_pct}% commission`
@@ -68,19 +68,19 @@ async function DealList() {
               </p>
             </div>
             <div className="flex shrink-0 items-center gap-2">
-              <span className="text-xs tabular-nums text-black/50 dark:text-white/50">
+              <span className="text-xs tabular-nums text-black/50">
                 {deal.click_count} clicks
               </span>
               {deal.is_featured ? (
-                <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-xs text-amber-700 dark:text-amber-300">
+                <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-xs text-amber-700">
                   Featured
                 </span>
               ) : null}
               <span
                 className={`rounded-full px-2 py-0.5 text-xs ${
                   deal.is_active
-                    ? "bg-teal-600/10 text-teal-700 dark:text-teal-300"
-                    : "bg-black/10 text-black/60 dark:bg-white/10 dark:text-white/60"
+                    ? "bg-teal-600/10 text-teal-700"
+                    : "bg-black/10 text-black/60"
                 }`}
               >
                 {deal.is_active ? "Live" : "Paused"}
@@ -99,7 +99,7 @@ export default function AdminAffiliateDealsPage() {
       <header className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">Affiliate deals</h1>
-          <p className="text-sm text-black/60 dark:text-white/60">
+          <p className="text-sm text-black/60">
             Hand-picked. Sorted by clicks so the ones earning their place float up.
           </p>
         </div>

@@ -9,7 +9,7 @@ import type { AffiliateDealRow } from "@/types";
 import { deleteAffiliateDeal, saveAffiliateDeal } from "./actions";
 
 const FIELD =
-  "w-full rounded-lg border border-black/20 bg-transparent px-3 py-2 text-sm dark:border-white/25";
+  "w-full rounded-lg border border-black/20 bg-transparent px-3 py-2 text-sm";
 const LABEL = "block text-sm font-medium mb-1";
 
 const CATEGORIES = [
@@ -227,7 +227,7 @@ export function AffiliateDealForm({ deal }: { deal: AffiliateDealRow | null }) {
           defaultValue={deal?.image_url ?? ""}
           className={FIELD}
         />
-        <p className="mt-1 text-xs text-black/50 dark:text-white/50">
+        <p className="mt-1 text-xs text-black/50">
           Must be on a configured host: {allowedImageHosts().join(", ")}. Anything else is
           rejected on save — next/image would throw on the public page.
         </p>
@@ -246,7 +246,7 @@ export function AffiliateDealForm({ deal }: { deal: AffiliateDealRow | null }) {
         />
       </div>
 
-      <div className="space-y-2 rounded-lg border border-black/10 p-4 dark:border-white/15">
+      <div className="space-y-2 rounded-lg border border-black/10 p-4">
         <label className="flex items-center gap-2 text-sm">
           <input type="checkbox" name="is_active" defaultChecked={deal?.is_active ?? false} />
           Active (visible on the public site)
@@ -256,7 +256,7 @@ export function AffiliateDealForm({ deal }: { deal: AffiliateDealRow | null }) {
           Featured (homepage placement)
         </label>
         {deal ? (
-          <p className="text-xs text-black/50 dark:text-white/50">
+          <p className="text-xs text-black/50">
             {deal.click_count} click{deal.click_count === 1 ? "" : "s"} recorded.
           </p>
         ) : null}
@@ -283,7 +283,7 @@ export function AffiliateDealForm({ deal }: { deal: AffiliateDealRow | null }) {
         {message ? (
           <span
             className={`whitespace-pre-line text-sm ${
-              isError ? "text-red-600" : "text-black/60 dark:text-white/60"
+              isError ? "text-red-600" : "text-black/60"
             }`}
           >
             {message}

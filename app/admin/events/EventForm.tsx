@@ -3,14 +3,14 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
-import { fromLocalInput, toLocalInput } from "@/lib/time";
+import { describeLocal, fromLocalInput, toLocalInput } from "@/lib/time";
 import { siteConfig } from "@/lib/site";
 import type { EventRow } from "@/types";
 
 import { deleteEvent, draftFromText, saveEvent } from "./actions";
 
 const FIELD =
-  "w-full rounded-lg border border-black/20 bg-transparent px-3 py-2 text-sm dark:border-white/25";
+  "w-full rounded-lg border border-black/20 bg-transparent px-3 py-2 text-sm";
 const LABEL = "block text-sm font-medium mb-1";
 
 const CATEGORIES = [
@@ -62,6 +62,22 @@ export function EventForm({ event }: { event: EventRow | null }) {
     price_info: event?.price_info ?? "",
     ticket_url: event?.ticket_url ?? "",
   });
+
+  /**
+   * True when the public description is just the pasted text. Catches the case
+   * where the editor pastes a post and saves without drafting — the site would
+   * publish the original Spanish instead of an English summary, which is both
+   * the wrong language and a verbatim copy of someone else's post.
+   */
+  const normalize = (text: string) =>
+    text
+      .toLowerCase()
+      .replace(/[^\p{Letter}\p{Number}]+/gu, " ")
+      .trim();
+  const descriptionIsOriginal =
+    draft.description_en.trim().length > 0 &&
+    rawText.trim().length > 0 &&
+    normalize(rawText).includes(normalize(draft.description_en));
 
   function set<K extends keyof Draft>(key: K, value: Draft[K]) {
     setDraft((current) => ({ ...current, [key]: value }));
@@ -145,10 +161,10 @@ export function EventForm({ event }: { event: EventRow | null }) {
       }}
       className="space-y-8"
     >
-      <section className="space-y-4 rounded-lg border border-black/10 p-4 dark:border-white/15">
+      <section className="space-y-4 rounded-lg border border-black/10 p-4">
         <div>
           <h2 className="font-semibold">Source</h2>
-          <p className="mt-1 text-xs text-black/60 dark:text-white/60">
+          <p className="mt-1 text-xs text-black/60">
             Paste the post text and we&apos;ll draft the English version. The original is kept for
             audit only and is never shown on the site.
           </p>
@@ -200,7 +216,7 @@ export function EventForm({ event }: { event: EventRow | null }) {
           type="button"
           onClick={onDraft}
           disabled={pending || rawText.trim().length < 20}
-          className="rounded-lg border border-black/20 px-3 py-1.5 text-sm font-medium disabled:opacity-50 dark:border-white/25"
+          className="rounded-lg border border-black/20 px-3 py-1.5 text-sm font-medium disabled:opacity-50"
         >
           {pending ? "Working…" : "Draft from this text"}
         </button>
@@ -233,6 +249,12 @@ export function EventForm({ event }: { event: EventRow | null }) {
             onChange={(e) => set("description_en", e.target.value)}
             className={FIELD}
           />
+          {descriptionIsOriginal ? (
+            <p className="mt-1 rounded border-l-2 border-amber-500 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+              This is still the pasted text. Press <strong>Draft from this text</strong> above, or
+              rewrite it in English — the site shouldn&apos;t republish the original post verbatim.
+            </p>
+          ) : null}
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -248,6 +270,11 @@ export function EventForm({ event }: { event: EventRow | null }) {
               onChange={(e) => set("starts_at", e.target.value)}
               className={FIELD}
             />
+            {draft.starts_at ? (
+              <p className="mt-1 text-xs font-medium text-teal-700">
+                {describeLocal(draft.starts_at)}
+              </p>
+            ) : null}
           </div>
           <div>
             <label className={LABEL} htmlFor="ends_at">
@@ -260,6 +287,9 @@ export function EventForm({ event }: { event: EventRow | null }) {
               onChange={(e) => set("ends_at", e.target.value)}
               className={FIELD}
             />
+            {draft.ends_at ? (
+              <p className="mt-1 text-xs text-black/50">{describeLocal(draft.ends_at)}</p>
+            ) : null}
           </div>
           <div>
             <label className={LABEL} htmlFor="category">
@@ -328,11 +358,11 @@ export function EventForm({ event }: { event: EventRow | null }) {
         </div>
       </section>
 
-      <div className="flex flex-wrap items-center gap-4 border-t border-black/10 pt-4 dark:border-white/15">
+      <div className="flex flex-wrap items-center gap-4 border-t border-black/10 pt-4">
         <button
           type="submit"
           disabled={pending}
-          className="rounded-lg border border-black/20 px-4 py-2 text-sm font-medium disabled:opacity-50 dark:border-white/25"
+          className="rounded-lg border border-black/20 px-4 py-2 text-sm font-medium disabled:opacity-50"
         >
           Save draft
         </button>
@@ -356,7 +386,7 @@ export function EventForm({ event }: { event: EventRow | null }) {
         ) : null}
         {message ? (
           <span
-            className={`whitespace-pre-line text-sm ${isError ? "text-red-600" : "text-black/60 dark:text-white/60"}`}
+            className={`whitespace-pre-line text-sm ${isError ? "text-red-600" : "text-black/60"}`}
           >
             {message}
           </span>

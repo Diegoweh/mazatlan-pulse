@@ -37,21 +37,21 @@ async function RouteList() {
   const routes = (data ?? []) as BusRouteRow[];
   if (routes.length === 0) {
     return (
-      <p className="text-sm text-black/60 dark:text-white/60">
+      <p className="text-sm text-black/60">
         No routes yet. Create the first one — Sábalo–Centro is the one most visitors need.
       </p>
     );
   }
 
   return (
-    <ul className="divide-y divide-black/10 dark:divide-white/15">
+    <ul className="divide-y divide-black/10">
       {routes.map((route) => (
         <li key={route.id} className="flex items-center justify-between gap-4 py-3">
           <div className="min-w-0">
             <Link href={`/admin/bus-routes/${route.id}`} className="font-medium hover:underline">
               {route.route_name}
             </Link>
-            <p className="text-xs text-black/50 dark:text-white/50">
+            <p className="text-xs text-black/50">
               {route.key_stops.length} stops
               {route.fare_mxn !== null ? ` · ${formatMxn(route.fare_mxn)}` : " · no fare"}
               {route.last_verified_at ? "" : " · unverified"}
@@ -61,8 +61,8 @@ async function RouteList() {
           <span
             className={`shrink-0 rounded-full px-2 py-0.5 text-xs ${
               route.is_active
-                ? "bg-teal-600/10 text-teal-700 dark:text-teal-300"
-                : "bg-black/10 text-black/60 dark:bg-white/10 dark:text-white/60"
+                ? "bg-teal-600/10 text-teal-700"
+                : "bg-black/10 text-black/60"
             }`}
           >
             {route.is_active ? "Live" : "Draft"}
@@ -79,7 +79,7 @@ export default function AdminBusRoutesPage() {
       <header className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">Bus routes</h1>
-          <p className="text-sm text-black/60 dark:text-white/60">
+          <p className="text-sm text-black/60">
             Curated by hand. Verify on the ground before marking a route verified.
           </p>
         </div>

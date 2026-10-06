@@ -9,7 +9,7 @@ async function AdminIdentity() {
 
   return (
     <form action="/admin/auth/signout" method="post" className="flex items-center gap-3">
-      <span className="text-xs text-black/50 dark:text-white/50">{user.email}</span>
+      <span className="text-xs text-black/50">{user.email}</span>
       <button type="submit" className="text-xs underline">
         Sign out
       </button>
@@ -24,7 +24,7 @@ async function AdminIdentity() {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="page-shell space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/10 pb-3 dark:border-white/15">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/10 pb-3">
         <nav className="flex gap-4 text-sm">
           <Link href="/admin/events" className="hover:underline">
             Events
