@@ -32,7 +32,7 @@ const AREAS = [
     alt: "Cerro del Crestón at dusk, the steep headland that closes the southern entrance to Mazatlán's harbour, with the lighthouse on its summit and waves breaking in the foreground.",
     name: "Cerro del Crestón",
     blurb:
-      "The headland at the south end, with the lighthouse on top. The climb is what most visitors come down here for.",
+      "The headland at the south end, with the lighthouse on top. Sábalo–Centro is the route that gets you near it.",
   },
 ] as const;
 

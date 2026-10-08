@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { TourAffiliateWidget } from "@/components/tours/TourAffiliateWidget";
+import { Figure } from "@/components/ui/Figure";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { PageHero } from "@/components/ui/PageHero";
 import { breadcrumbSchema, touristAttractionSchema } from "@/lib/schema-org";
@@ -49,6 +50,24 @@ export default async function ToursPage() {
       />
 
       <div className="page-shell space-y-12">
+        <section className="grid gap-6 sm:grid-cols-5 sm:items-center">
+          <Figure
+            src="/images/paseo-banana-inflable.webp"
+            alt="A group of people in orange life jackets riding an inflatable yellow banana boat towed across the bay, with the Mazatlán hotel strip on the shoreline behind them."
+            imageClassName="aspect-[6/5]"
+            sizes="(min-width: 640px) 300px, 100vw"
+            caption="Banana boat off the Golden Zone"
+            className="sm:col-span-2"
+          />
+          <div className="space-y-3 sm:col-span-3">
+            <h2 className="font-display text-2xl text-navy">What people actually book</h2>
+            <p className="leading-relaxed text-ink/80">
+              Water sports off the Golden Zone, boat trips to Deer Island, food walks through
+              Centro and day trips inland. We list the operators we would send a friend to, not
+              every listing that pays a commission.
+            </p>
+          </div>
+        </section>
 
       <TourAffiliateWidget deals={tours} placement="grid" heading="Tours & activities" />
       <TourAffiliateWidget deals={transport} placement="grid" heading="Airport transfers & cars" />

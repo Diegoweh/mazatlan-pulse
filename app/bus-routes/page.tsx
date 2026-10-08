@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 
 import { RouteIndex } from "@/components/transport/RouteIndex";
 import { Figure } from "@/components/ui/Figure";
@@ -136,9 +137,50 @@ export default async function BusRoutesPage() {
           {written.map((section) => (
             <section key={section.id} id={section.id} className="space-y-3">
               <h2>{section.heading}</h2>
+              {/* Floated so the prose wraps around it, magazine-style, instead of
+                  the image interrupting the column. Capped at 280px because the
+                  sources are ~600px wide and would soften beyond that on retina. */}
+              {section.images?.length === 1 ? (
+                <figure className="mb-2 sm:float-right sm:ml-6 sm:w-[280px]">
+                  <div className="relative aspect-[6/5] overflow-hidden rounded-[14px] bg-teal-wash">
+                    <Image
+                      src={section.images[0].src}
+                      alt={section.images[0].alt}
+                      fill
+                      sizes="(min-width: 640px) 280px, 100vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <figcaption className="mt-2 text-xs text-muted">
+                    {section.images[0].caption}
+                  </figcaption>
+                </figure>
+              ) : null}
+              {/* Two images means "tell these apart", so they sit side by side at
+                  matching size rather than floating. Held to max-w-md: the auriga
+                  source is only 360px wide. */}
+              {section.images && section.images.length > 1 ? (
+                <div className="grid max-w-md grid-cols-2 gap-3 pt-1">
+                  {section.images.map((image) => (
+                    <figure key={image.src}>
+                      <div className="relative aspect-[6/5] overflow-hidden rounded-[14px] bg-teal-wash">
+                        <Image
+                          src={image.src}
+                          alt={image.alt}
+                          fill
+                          sizes="(min-width: 640px) 216px, 45vw"
+                          className="object-cover"
+                        />
+                      </div>
+                      <figcaption className="mt-2 text-xs text-muted">{image.caption}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+              ) : null}
               {section.body.map((paragraph, index) => (
                 <p key={index}>{paragraph}</p>
               ))}
+              <div className="clear-both" />
             </section>
           ))}
         </div>
