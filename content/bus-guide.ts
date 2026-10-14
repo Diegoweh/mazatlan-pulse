@@ -125,6 +125,11 @@ export const busGuideSections: GuideSection[] = [
       alt: "Aerial view of the lighthouse on Cerro del Crest\u00f3n, its white buildings and red lantern room on a green headland, with the glass skywalk platform jutting out over the sea.",
       caption: "The lighthouse and the glass viewpoint",
       },
+      {
+        src: "/images/mercado-pino-suarez.jpg",
+        alt: "Inside Mercado Pino Su\u00e1rez: stalls piled with bananas, cabbages, tomatoes and carrots under a high market roof.",
+        caption: "Mercado Pino Su\u00e1rez, Centro",
+      },
     ],
     prompts: [
       "Sábalo–Centro is the one route that covers the tourist zone — say so, and link to it.",

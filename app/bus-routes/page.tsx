@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import { RouteIndex } from "@/components/transport/RouteIndex";
 import { Figure } from "@/components/ui/Figure";
+import { FullBleedBand } from "@/components/ui/FullBleedBand";
 import { PageHero } from "@/components/ui/PageHero";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { busGuideIntro, busGuideSections } from "@/content/bus-guide";
@@ -130,6 +131,19 @@ export default async function BusRoutesPage() {
         />
       </section>
 
+      </div>
+
+      {/* Full-bleed between two .page-shell blocks: the aerial is the corridor
+          the guide below keeps referring to. */}
+      <FullBleedBand
+        src="/images/zona-dorada-atardecer.jpg"
+        alt="Aerial view of Mazatlán's Golden Zone at sunset: hotel towers along a curving beach, the white towers of Valentinos on the point and an island offshore."
+        kicker="The tourist corridor"
+      >
+        Sábalo–Centro is the one route that runs this whole stretch, end to end.
+      </FullBleedBand>
+
+      <div className="page-shell space-y-10">
       {/* Sections with no verified copy yet simply don't render — an empty
           heading would promise the reader something that isn't there. */}
       {written.length > 0 ? (
@@ -156,9 +170,10 @@ export default async function BusRoutesPage() {
                   </figcaption>
                 </figure>
               ) : null}
-              {/* Two images means "tell these apart", so they sit side by side at
-                  matching size rather than floating. Held to max-w-md: the auriga
-                  source is only 360px wide. */}
+              {/* Two images sit side by side at matching size rather than
+                  floating — either a comparison (pulmonía vs auriga) or two stops
+                  the section covers. Held to max-w-md: the auriga source is only
+                  360px wide. */}
               {section.images && section.images.length > 1 ? (
                 <div className="grid max-w-md grid-cols-2 gap-3 pt-1">
                   {section.images.map((image) => (

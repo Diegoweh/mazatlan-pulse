@@ -52,10 +52,10 @@ export default async function ToursPage() {
       <div className="page-shell space-y-12">
         <section className="grid gap-6 sm:grid-cols-5 sm:items-center">
           <Figure
-            src="/images/paseo-banana-inflable.webp"
-            alt="A group of people in orange life jackets riding an inflatable yellow banana boat towed across the bay, with the Mazatlán hotel strip on the shoreline behind them."
+            src="/images/tour-banana-boat.jpg"
+            alt="A family in life jackets holding on to a yellow inflatable banana boat as it is towed fast across the water off Mazatlán."
             imageClassName="aspect-[6/5]"
-            sizes="(min-width: 640px) 300px, 100vw"
+            sizes="(min-width: 640px) 400px, 100vw"
             caption="Banana boat off the Golden Zone"
             className="sm:col-span-2"
           />
@@ -67,6 +67,32 @@ export default async function ToursPage() {
               every listing that pays a commission.
             </p>
           </div>
+        </section>
+
+        {/* The activities the affiliate links will point at. Same height so they
+            read as a set, not a gallery. */}
+        <section aria-label="Popular activities" className="grid gap-4 sm:grid-cols-3">
+          <Figure
+            src="/images/tour-whale-watching.jpg"
+            alt="A humpback whale's tail lifting out of the water beside a small boat of visitors in life jackets off Mazatlán."
+            imageClassName="aspect-[4/3]"
+            sizes="(min-width: 640px) 330px, 100vw"
+            caption="Whale watching"
+          />
+          <Figure
+            src="/images/tour-turtle-release.jpg"
+            alt="Newly hatched sea turtles crawling across the sand toward the sea."
+            imageClassName="aspect-[4/3]"
+            sizes="(min-width: 640px) 330px, 100vw"
+            caption="Turtle hatchling releases"
+          />
+          <Figure
+            src="/images/tour-zipline.jpg"
+            alt="A woman in a helmet and harness on a zipline high above dense green forest."
+            imageClassName="aspect-[4/3]"
+            sizes="(min-width: 640px) 330px, 100vw"
+            caption="Ziplining inland"
+          />
         </section>
 
       <TourAffiliateWidget deals={tours} placement="grid" heading="Tours & activities" />
