@@ -3,6 +3,13 @@ import Link from "next/link";
 
 import { siteConfig } from "@/lib/site";
 
+// Footer-only: the pages affiliate reviewers and careful readers look for first.
+const LEGAL = [
+  { href: "/about", label: "About" },
+  { href: "/affiliate-disclosure", label: "Affiliate disclosure" },
+  { href: "/privacy", label: "Privacy" },
+];
+
 const NAV = [
   { href: "/bus-routes", label: "Bus routes" },
   { href: "/events", label: "Events" },
@@ -75,8 +82,24 @@ export function SiteFooter() {
           </nav>
         </div>
 
+        <nav aria-label="Legal" className="flex flex-wrap gap-x-5 gap-y-2 text-xs">
+          {LEGAL.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-sand/70 transition-colors hover:text-coral"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
         <p className="border-t border-white/10 pt-6 text-xs leading-relaxed text-sand/55">
-          Some links are affiliate links; we may earn a commission at no extra cost to you. Event
+          Some links are affiliate links; we may earn a commission at no extra cost to you (
+          <Link href="/affiliate-disclosure" className="underline hover:text-coral">
+            details
+          </Link>
+          ). Event
           listings are summarized from public sources and link back to the original. Fares and
           schedules change — confirm locally before you travel.
         </p>

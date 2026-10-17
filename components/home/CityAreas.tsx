@@ -21,7 +21,7 @@ const AREAS = [
       "The hotel strip along the beach. Most visitors sleep here, and most bus routes run through it.",
   },
   {
-    src: "/images/mzt-5.webp",
+    src: "/images/catedral-noche.jpg",
     alt: "Golden hour over the rooftops of Mazatlán's historic centre, with cathedral towers and an antenna-topped hill behind.",
     name: "Centro Histórico",
     blurb:
