@@ -33,7 +33,18 @@ export function allowedImageHosts(): string[] {
   return REMOTE_IMAGE_HOSTS.map((host) => host.hostname);
 }
 
+/**
+ * Site-relative paths to our own photos, e.g. /images/tour-whale-watching.jpg.
+ * Strict on purpose: one folder, plain filenames, no "..", no query strings.
+ */
+const LOCAL_IMAGE = /^\/images\/[A-Za-z0-9][A-Za-z0-9._-]*\.(jpe?g|png|webp|avif)$/i;
+
 export function isAllowedImageUrl(rawUrl: string): boolean {
+  // Our own photos are always fine — next/image serves public/ without any
+  // remotePatterns entry. Without this, the admin could only illustrate a deal
+  // with a hotlinked partner image, never with a photo we actually own.
+  if (LOCAL_IMAGE.test(rawUrl)) return true;
+
   let url: URL;
   try {
     url = new URL(rawUrl);

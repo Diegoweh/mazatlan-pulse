@@ -223,13 +223,15 @@ export function AffiliateDealForm({ deal }: { deal: AffiliateDealRow | null }) {
         <input
           id="image_url"
           name="image_url"
-          type="url"
           defaultValue={deal?.image_url ?? ""}
+          placeholder="/images/tour-whale-watching.jpg"
           className={FIELD}
         />
         <p className="mt-1 text-xs text-black/50">
-          Must be on a configured host: {allowedImageHosts().join(", ")}. Anything else is
-          rejected on save — next/image would throw on the public page.
+          Prefer one of our own photos: /images/tour-whale-watching.jpg,
+          /images/tour-turtle-release.jpg, /images/tour-zipline.jpg, /images/tour-banana-boat.jpg.
+          External images must be on a configured host ({allowedImageHosts().join(", ")}) —
+          anything else is rejected on save, because next/image would throw on the public page.
         </p>
       </div>
 
