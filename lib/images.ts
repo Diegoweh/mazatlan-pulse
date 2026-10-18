@@ -34,10 +34,11 @@ export function allowedImageHosts(): string[] {
 }
 
 /**
- * Site-relative paths to our own photos, e.g. /images/tour-whale-watching.jpg.
- * Strict on purpose: one folder, plain filenames, no "..", no query strings.
+ * Site-relative paths to our own photos, e.g. /images/tours/segway.jpg.
+ * Strict on purpose: at most one subfolder, plain names, no "..", no query strings.
  */
-const LOCAL_IMAGE = /^\/images\/[A-Za-z0-9][A-Za-z0-9._-]*\.(jpe?g|png|webp|avif)$/i;
+const LOCAL_IMAGE =
+  /^\/images\/(?:[A-Za-z0-9][A-Za-z0-9_-]*\/)?[A-Za-z0-9][A-Za-z0-9._-]*\.(jpe?g|png|webp|avif)$/i;
 
 export function isAllowedImageUrl(rawUrl: string): boolean {
   // Our own photos are always fine — next/image serves public/ without any
