@@ -16,6 +16,10 @@ const NAV = [
   { href: "/tours", label: "Tours" },
 ];
 
+// Seasonal, so footer only: a fourth header link doesn't fit beside the logo at
+// phone width.
+const FOOTER_NAV = [...NAV, { href: "/baseball", label: "Baseball" }];
+
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-line/80 bg-sand/85 backdrop-blur-md">
@@ -71,7 +75,7 @@ export function SiteFooter() {
 
           <nav aria-label="Footer">
             <ul className="space-y-2 text-sm">
-              {NAV.map((item) => (
+              {FOOTER_NAV.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="text-sand/80 transition-colors hover:text-coral">
                     {item.label}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { NextHomeSeries } from "@/components/baseball/NextHomeSeries";
 import { EventCard } from "@/components/events/EventCard";
 import { CityAreas } from "@/components/home/CityAreas";
 import { WideDuo } from "@/components/home/WideDuo";
@@ -97,6 +98,8 @@ export default async function HomePage() {
           </p>
         )}
       </section>
+
+        <NextHomeSeries />
 
         <TourAffiliateWidget deals={deals} placement="grid" heading="Popular tours & transfers" />
       </div>

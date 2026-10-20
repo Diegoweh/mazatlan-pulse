@@ -79,7 +79,7 @@ export default function PrivacyPage() {
               the site and keep it secure. The site&apos;s content is stored with Supabase.
             </p>
             <p>
-              Bus route pages show an interactive map. The map tiles are loaded by your browser
+              Bus route pages and the baseball page show an interactive map. The map tiles are loaded by your browser
               directly from OpenFreeMap, which receives standard request information when it sends
               them. Fonts are hosted on this site, so loading a page does not contact Google.
             </p>

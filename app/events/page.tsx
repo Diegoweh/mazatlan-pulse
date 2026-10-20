@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { NextHomeSeries } from "@/components/baseball/NextHomeSeries";
 import { EventCard } from "@/components/events/EventCard";
 import { Figure } from "@/components/ui/Figure";
 import { FullBleedBand } from "@/components/ui/FullBleedBand";
@@ -53,6 +54,8 @@ export default async function EventsPage() {
             className="sm:col-span-2"
           />
         </header>
+
+        <NextHomeSeries />
 
         {events.length > 0 ? (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

@@ -111,6 +111,32 @@ export function busRouteSchema(route: BusRouteRow): JsonLdObject {
   };
 }
 
+/**
+ * schema.org/SportsEvent for one Venados home game. Date-only startDate: the
+ * official calendar gives no first-pitch time, and an invented one would be
+ * wrong structured data.
+ */
+export function homeGameSchema(game: {
+  date: string;
+  opponent: string;
+  city: string;
+  stadium: string;
+}): JsonLdObject {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SportsEvent",
+    name: `Venados de Mazatlán vs. ${game.opponent} de ${game.city}`,
+    sport: "Baseball",
+    startDate: game.date,
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    url: absoluteUrl("/baseball"),
+    homeTeam: { "@type": "SportsTeam", name: "Venados de Mazatlán" },
+    awayTeam: { "@type": "SportsTeam", name: `${game.opponent} de ${game.city}` },
+    location: { "@type": "StadiumOrArena", name: game.stadium, address: cityAddress },
+  };
+}
+
 /** Strips undefined so we never ship `"key": null` noise to crawlers. */
 export function serializeJsonLd(schema: JsonLdObject): string {
   return JSON.stringify(schema, (_key, value) => (value === undefined ? undefined : value));
