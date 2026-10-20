@@ -8,9 +8,9 @@ import type { AffiliateDealRow, AffiliatePlacement } from "@/types";
 
 const PLACEMENT_STYLES: Record<AffiliatePlacement, string> = {
   sidebar: "flex flex-col gap-3",
-  inline: "grid gap-3 sm:grid-cols-2",
-  footer: "grid gap-3 sm:grid-cols-2 lg:grid-cols-4",
-  grid: "grid gap-4 sm:grid-cols-2 lg:grid-cols-3",
+  inline: "grid grid-cols-1 gap-3 sm:grid-cols-2",
+  footer: "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4",
+  grid: "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3",
 };
 
 /**
@@ -51,7 +51,7 @@ export function TourAffiliateWidget({
             target="_blank"
             rel="sponsored noopener noreferrer"
             onClick={() => trackAffiliateClick(deal.slug)}
-            className="card card-interactive group flex gap-4 p-4"
+            className="card card-interactive group flex min-w-0 gap-4 p-4"
           >
             {deal.image_url ? (
               <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-teal-wash">
